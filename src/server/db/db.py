@@ -344,13 +344,6 @@ class DatabaseMethods:
             else:
                 return "Neutral"
             
-    def get_food_list(self):
-        query = "SELECT food_name FROM Food"
-        with DatabaseConnection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query)
-            food_names = [row[0] for row in cursor.fetchall()]
-            return food_names
 
     def update_food_ratings(self, update_query, avg_rating, avg_sentiment, food_name):
 
@@ -433,7 +426,7 @@ class DatabaseMethods:
         with DatabaseConnection() as conn:
             cursor = conn.cursor()
             cursor.execute(query)
-            food_names = [row[0] for row in cursor.fetchall()]
+            food_names = [row for row in cursor.fetchall()]
             return food_names
         
     def submit_food_audit_feedback(self, user_id, json_data):
