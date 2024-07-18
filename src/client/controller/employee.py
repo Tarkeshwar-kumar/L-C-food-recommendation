@@ -30,6 +30,8 @@ class Employee(User):
             client.sendall(bytes(request_data,encoding="utf-8"))
             received = client.recv(1024)
             response = json.loads(received.decode().replace("'", '"'))
+        except ValueError as error:
+            print("Enter valid type for input")
         except Exception as e:
             print(e)
         else:
@@ -50,7 +52,7 @@ class Employee(User):
             received = client.recv(1024)
             response = json.loads(received.decode().replace("'", '"'))
         except Exception as e:
-            print(e)
+            print("Food No doesn't exist")
         else:
             print(response['message'])
         finally:

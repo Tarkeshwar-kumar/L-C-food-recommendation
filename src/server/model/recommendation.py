@@ -39,8 +39,6 @@ class Recommendation:
         for food in all_food_items:
             if food not in user_prefered_food:
                 other_foods.append(food)
-        print("of ", other_foods)
-        print("rf ", user_prefered_food)
         recommended_food = []
         for food_score in self.sort_food_for_recommendation(user_prefered_food, limit):
             recommended_food.append(food_score)

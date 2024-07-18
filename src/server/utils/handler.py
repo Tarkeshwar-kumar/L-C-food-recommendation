@@ -114,7 +114,13 @@ def handle_give_feedback(user: User, json_data):
 
 
 def handle_vote(user: User, json_data):
-    return user.vote_food_recommended(user.user_id, json_data["food_name"])
+    try:
+        db = DatabaseMethods()
+        if not db.food_exists_in_menu(json_data['food_name']):
+            raise FoodDoesNotExist(f"Food {json_data['food_name']} doesn't exist")
+        return user.vote_food_recommended(user.user_id, json_data["food_name"])
+    except FoodDoesNotExist as e:
+        return {"status": "error", "message": str(e)}
 
 
 def handle_rollout_recommendation(user: User, json_data):

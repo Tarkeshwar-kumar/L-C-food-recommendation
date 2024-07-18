@@ -3,6 +3,8 @@ import json
 from client.menu.menu import options
 from client.controller.controller import User
 import json
+from client.validation.validation import validate_profile
+
 
 class Admin(User):
 
@@ -23,10 +25,12 @@ class Admin(User):
                 print("Invalid input for price. Please enter a valid number.")
                 return
             
-            food_type = input("Enter food type: ")
+            food_type = input("Enter food type [Vegetarian, Non Vegetarian, Eggetarian]: ")
             spice_level = input("Please select food spice level [High/ Medium/ Low]: ")
             region = input("Which regional food it is [North Indian/ South Indian/ Other]: ")
             is_sweet = input("Is food sweet in taste [Yes/ No]: ")
+            
+            validate_profile(food_type, spice_level, region, is_sweet)
             request = {
                 "request_type": "add_item_to_menu",
                 "food_name": food_name,
