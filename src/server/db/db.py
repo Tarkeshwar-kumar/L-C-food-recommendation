@@ -440,3 +440,10 @@ class DatabaseMethods:
                 (user_id, json_data['food'], json_data['didnt_liked'], json_data['like_to_taste'], json_data['recipe'])
             )
             conn.commit()
+
+    def audit_result(self):
+        query = "SELECT * FROM AuditFeedback"
+        with DatabaseConnection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query)
+            return cursor.fetchall()

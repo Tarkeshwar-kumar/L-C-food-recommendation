@@ -68,6 +68,23 @@ class Chef(User):
             show_recommendatio_table(response['message'])
         finally:
             self.display_options(client)
+        
+    def view_audit_result(self, client):
+        try:
+            request= {
+                "request_type": "audit_result",
+            }
+            request_data = json.dumps(request)
+
+            client.sendall(bytes(request_data,encoding="utf-8"))
+            received = client.recv(1024)
+            response = json.loads(received.decode().replace("'", '"'))
+        except Exception as e:
+            print(e)
+        else:
+            print(response)
+        finally:
+            self.display_options(client)
 
     def choose_action(self, client):
         action = input("Choose action: ")
@@ -82,5 +99,7 @@ class Chef(User):
             self.logout(client)
         elif action == "E":
             self.audit_foods(client)
+        elif action == "F":
+            self.view_audit_result(client)
         else:
             print("Invalid action")

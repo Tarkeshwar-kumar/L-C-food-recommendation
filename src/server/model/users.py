@@ -116,6 +116,11 @@ class ChefService(metaclass = ABCMeta):
 
 @dataclass
 class Chef(User, ChefService):
+
+    def audit_result(self):
+        db = DatabaseMethods()
+        return db.audit_result()
+
     
     def rollout_food_recommendation(self, food_list):
 

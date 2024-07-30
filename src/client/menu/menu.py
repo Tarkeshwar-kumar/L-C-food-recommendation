@@ -13,7 +13,8 @@ options = {
         "B": "View menu",
         "C": "Get food recommendation",
         "D": "Logout",
-        "E": "Audit Foods"
+        "E": "Audit Foods",
+        "F": "View Audit result"
     },
     "employee_options": {
         "A": "Give feedback on food",
