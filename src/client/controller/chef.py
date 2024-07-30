@@ -82,7 +82,11 @@ class Chef(User):
         except Exception as e:
             print(e)
         else:
-            print(response)
+            print("Id   food_name   what didn't liked  tips   recipe")
+            for res in response:
+                user_id, food_name, liked, improvement, recipe = res
+                print(user_id, food_name+ "   ", liked+ "        ", improvement+ "   " , recipe)
+
         finally:
             self.display_options(client)
 
