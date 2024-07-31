@@ -24,5 +24,6 @@ options = {
         "E": "Get food recommendation",
         "F": "Logout",
         "G": "Update profile",
+        "H": "View rolled out menu"
     }
 }

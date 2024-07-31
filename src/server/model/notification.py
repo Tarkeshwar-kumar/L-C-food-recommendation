@@ -13,6 +13,7 @@ class Notification:
 
 
 class AddItemNotification(Notification):
+    print("adding notification")
     def send_notification(self, food_name: str):
         db = DatabaseMethods()
         user_id_list = db.get_epmloyee_list()
@@ -23,7 +24,9 @@ class AddItemNotification(Notification):
 
 
 class RemoveItemNotification(Notification):
+    print("sneding remove notification")
     def send_notification(self, food_name: str):
+        print("sneding remove notification")
         db = DatabaseMethods()
         user_id_list = db.get_epmloyee_list()
         for user_id in user_id_list:
@@ -31,6 +34,7 @@ class RemoveItemNotification(Notification):
             db.insert_notification(user_id, NotificationType.REMOVE_ITEM.value, food_name)
 
 class FoodAvailabilityNotification(Notification):
+    print("availability notification")
     def send_notification(self, food_name: str):
         db = DatabaseMethods()
         user_id_list = db.get_epmloyee_list()
@@ -39,6 +43,7 @@ class FoodAvailabilityNotification(Notification):
             db.insert_notification(user_id, NotificationType.FOOD_AVAILABILITY_CHANGED.value, food_name)
 
 class AuditNotification(Notification):
+    print("audit notification")
     def send_notification(self, food_name: str):
         db = DatabaseMethods()
         user_id_list = db.get_epmloyee_list()

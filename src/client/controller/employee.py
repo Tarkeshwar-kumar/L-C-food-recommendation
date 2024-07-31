@@ -52,7 +52,7 @@ class Employee(User):
             received = client.recv(1024)
             response = json.loads(received.decode().replace("'", '"'))
         except Exception as e:
-            print("Food No doesn't exist")
+            print("Food not available for voting")
         else:
             print(response['message'])
         finally:
@@ -140,6 +140,27 @@ class Employee(User):
         finally:
             self.display_options(client)
 
+    def view_rolled_out_menu(self, client):
+        try:
+            request = {
+                "request_type": "view_rolled_out_menu"
+            }
+            request_data = json.dumps(request)
+
+            client.sendall(bytes(request_data, encoding="utf-8"))
+            received = client.recv(1024)
+            response = json.loads(received.decode().replace("'", '"'))
+
+        except Exception as e:
+            print("Error viewing menu:", e)
+        else:
+            print()
+            for food in response:
+                if len(food) > 0:
+                    print(food[0])      
+            print()
+        finally:
+            self.display_options(client)
 
     def choose_action(self, client):
         action = input("Choose action: ")
@@ -157,5 +178,7 @@ class Employee(User):
             self.logout(client)
         elif action == "G":
             self.update_profile(client)
+        elif action == "H":
+            self.view_rolled_out_menu(client)
         else:
             print("Invalid action")

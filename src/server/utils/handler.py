@@ -32,7 +32,7 @@ def handle_add_item_to_menu(user: User, json_data):
             )
             notification = AddItemNotification()
             user.add_item_to_menu(food)
-            notification.send_notification(json_data["food_name"])
+            notification.send_notification((json_data["food_name"],))
             return {"status": "success"}
         except KeyError as e:
             return {"status": "error", "message": f"Missing required field: {str(e)}"}
@@ -59,7 +59,7 @@ def handle_change_food_price(user: User, json_data):
 
 def handle_change_food_availability(user: User, json_data):
     notification = FoodAvailabilityNotification()
-    notification.send_notification(json_data["food_name"])
+    notification.send_notification((json_data["food_name"],))
     user.change_food_availability(json_data["food_name"])
     return {"status": "success", "message": "Changed Food Availability"}
 
@@ -71,7 +71,7 @@ def handle_remove_item_from_menu(user: User, json_data):
             raise FoodDoesNotExist(f'Food {json_data["food_name"]} doesn\'t exist')
 
         notification = RemoveItemNotification()
-        notification.send_notification(json_data["food_name"])
+        notification.send_notification((json_data["food_name"],))
         user.remove_item_from_menu(json_data["food_name"])
         return {"status": "success", "message": "Food item removed successfully"}
 
@@ -116,8 +116,8 @@ def handle_give_feedback(user: User, json_data):
 def handle_vote(user: User, json_data):
     try:
         db = DatabaseMethods()
-        if not db.food_exists_in_menu(json_data['food_name']):
-            raise FoodDoesNotExist(f"Food {json_data['food_name']} doesn't exist")
+        if not db.food_recommended_by_chef(json_data['food_name']):
+            raise FoodDoesNotExist(f"Food {json_data['food_name']} is not available for voting")
         return user.vote_food_recommended(user.user_id, json_data["food_name"])
     except FoodDoesNotExist as e:
         return {"status": "error", "message": str(e)}
@@ -162,3 +162,6 @@ def handle_update_profile(user:User, json_data):
 
 def handle_audit_result(user: User, json_data):
     return user.audit_result()
+
+def handle_view_rolled_out_menu(user: User, json_data):
+    return user.view_rolled_out_menu()

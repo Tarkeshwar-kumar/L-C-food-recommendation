@@ -105,6 +105,10 @@ class Employee(User, EmployeeService):
         db = DatabaseMethods()
         db.submit_food_audit_feedback(user_id, json_data)
 
+    def view_rolled_out_menu(self):
+        db = DatabaseMethods()
+        return db.view_rolled_out_menu()
+
 class ChefService(metaclass = ABCMeta):
     @abstractmethod
     def rollout_food_recommendation():
@@ -130,6 +134,7 @@ class Chef(User, ChefService):
         
         db = DatabaseMethods()
         db.delete_table()
+        print("Inserting into table")
         for food in food_list:
             db.insert_item_for_recommendation(food)
 

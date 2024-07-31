@@ -152,13 +152,16 @@ class DatabaseMethods:
             return False
     
     def delete_table(self):
+        print("deleting from the table")
+        query = [
+            "DELETE FROM RecommendedFood;",
+            "DELETE FROM Vote;"
+        ]
         with DatabaseConnection() as connection:
             cursor = connection.cursor()
-            cursor.execute(
-                f"""
-                    DELETE FROM RecommendedFood;"
-                """
-            )
+            for q in query:
+                cursor.execute(q)
+                connection.commit() 
 
     def is_valid_feedback(self, food_name: str, user_id: str):
         with DatabaseConnection() as connection:
@@ -267,6 +270,8 @@ class DatabaseMethods:
             return user_id_list
         
     def insert_notification(self, user_id, notification_type_id, food_name):
+        print("inseritng into notification table")
+        print(user_id, notification_type_id)
         with DatabaseConnection() as connection:
             cursor = connection.cursor()
             cursor.execute(
@@ -274,7 +279,7 @@ class DatabaseMethods:
                     INSERT INTO Notification (user_id, notification_type_id, Timestamp, food_name) 
                     VALUES (%s, %s, NOW(), %s)
                 """,
-                (user_id, notification_type_id, food_name)
+                (user_id, notification_type_id, food_name[0])
             )
             connection.commit()
 
@@ -321,11 +326,14 @@ class DatabaseMethods:
             print("Feedback updated successfully")
 
     def calculate_avg_rating(self, food_name):
-        query = "SELECT AVG(rating) FROM Feedback WHERE food_name = %s"
+        print("calculating avg rating")
+        query = "SELECT AVG(rating) FROM Feedback WHERE food_name = %s;"
         with DatabaseConnection() as connection:
             cursor = connection.cursor()
-            cursor.execute(query, (food_name,))
+            print("fn ", food_name[0])
+            cursor.execute(query, (food_name[0],))
             result = cursor.fetchone()
+            print("res; ", result)
             return result[0] if result else 0
         
     def get_sentiment(self, food_name, sentiment_scores):
@@ -369,10 +377,15 @@ class DatabaseMethods:
             cursor = conn.cursor()
             cursor.execute(
                 """
-                    INSERT INTO DiscardedFood (food_name, avg_rating) VALUES
-                    (%s, %s)
+                    DELETE FROM DiscardedFood;
+                """
+            )
+            conn.commit()
+            cursor.execute(
+                """
+                    INSERT INTO DiscardedFood (food_name, avg_rating) VALUES (%s, %s);
                 """,
-                (food_name, avg_rating)
+                (food_name[0], avg_rating)
             )
             conn.commit()
 
@@ -422,11 +435,13 @@ class DatabaseMethods:
             return result
         
     def get_food_list(self):
-        query = "SELECT food_name FROM Food"
+        print("getting food list")
+        query = "SELECT food_name FROM Food;"
         with DatabaseConnection() as conn:
             cursor = conn.cursor()
             cursor.execute(query)
             food_names = [row for row in cursor.fetchall()]
+            print("fn: ", food_names)
             return food_names
         
     def submit_food_audit_feedback(self, user_id, json_data):
@@ -447,3 +462,37 @@ class DatabaseMethods:
             cursor = conn.cursor()
             cursor.execute(query)
             return cursor.fetchall()
+        
+    def food_recommended_by_chef(self, food_name) -> bool:
+        with DatabaseConnection() as connection:
+            cursor = connection.cursor()
+            response = cursor.execute(
+                f"""
+                    SELECT * From RecommendedFood WHERE food_name='{food_name}';
+                """
+            )
+            response = cursor.fetchall()
+            print(response)
+            if len(response) > 0:
+                return True
+            return False
+        
+
+    def view_rolled_out_menu(self):
+        with DatabaseConnection() as connection:
+            cursor = connection.cursor()
+            response = cursor.execute(
+                f"""
+                    SELECT food_name FROM RecommendedFood;
+                """
+            )
+            response = cursor.fetchall()
+            print("res ", response)
+            recommended_menu = [[]]
+            for food_item in response:
+                food = []
+                food.append(food_item[0])
+                print("food ", food)
+                recommended_menu.append(food)
+
+            return recommended_menu

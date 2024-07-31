@@ -1,7 +1,7 @@
 from client.menu.menu import options
 from client.controller.controller import User
 import json
-from client.utils.utils import show_recommendatio_table
+from client.utils.utils import show_recommendatio_table, show_audit_result
 
 class Chef(User):
     
@@ -34,8 +34,9 @@ class Chef(User):
         finally:
             self.display_options(client)
 
-    def get_food_recommendation(self, client, limit):
+    def get_food_recommendation(self, client):
         try:
+            limit = int(input("How many food items you want to see in recommendation"))
             request= {
                 "request_type": "food_recommendation",
                 "limit": limit
@@ -78,15 +79,11 @@ class Chef(User):
 
             client.sendall(bytes(request_data,encoding="utf-8"))
             received = client.recv(1024)
-            response = json.loads(received.decode().replace("'", '"'))
+            response = json.loads(received.decode())
         except Exception as e:
             print(e)
         else:
-            print("Id   food_name   what didn't liked  tips   recipe")
-            for res in response:
-                user_id, food_name, liked, improvement, recipe = res
-                print(user_id, food_name+ "   ", liked+ "        ", improvement+ "   " , recipe)
-
+            show_audit_result(response)
         finally:
             self.display_options(client)
 

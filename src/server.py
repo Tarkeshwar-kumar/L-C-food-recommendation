@@ -77,7 +77,7 @@ class RequestHandler:
                 except json.JSONDecodeError:
                     self.send_response({"status": "error", "message": "Invalid JSON"})
                 except Exception as e:
-                    self.send_response({"status": "error", "message": f"Server error: {str(e)}"})
+                    self.send_response({"status": "error", "message": f"{str(e)}"})
 
     def process_request(self, json_data: Dict[str, Any]) -> Dict[str, Any]:
         if json_data["request_type"] == "auth":
@@ -132,7 +132,8 @@ def handle_request(user: User, json_data: Dict[str, Any]) -> Dict[str, Any]:
         "audit_food": handle_audit,
         "submit_improvement": handle_submit_improvement,
         "update_profile": handle_update_profile,
-        "audit_result": handle_audit_result
+        "audit_result": handle_audit_result,
+        "view_rolled_out_menu": handle_view_rolled_out_menu
     }
 
     if request_type in handlers:
