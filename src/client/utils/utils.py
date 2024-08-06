@@ -70,7 +70,7 @@ def submit_improvement_feedback(food_name, client):
 
 def view_recommendation(response):
     table = PrettyTable(['Food', 'Rating'])
-    print(response)
+
     for item in response:
         if item and len(item) >= 2:
             name, rating = item[:2]
