@@ -15,7 +15,9 @@ def display_notifications(response, client):
             elif notification_type == 'FOOD_AVAILABILITY_CHANGED':
                 print(f"{food_name} AVAILABILITY CHANGED")
             elif notification_type == "FOOD_AUDIT":
-                submit_improvement_feedback(food_name, client)
+                print(f"Your feedback is required on foor item {food_name} for improvement")
+                if input("Do you want to give feedback? [Yes]").capitalize() == "Yes":
+                    submit_improvement_feedback(food_name, client)
     else:
         print("No new notifications")
 
@@ -68,7 +70,7 @@ def submit_improvement_feedback(food_name, client):
 
 def view_recommendation(response):
     table = PrettyTable(['Food', 'Rating'])
-
+    print(response)
     for item in response:
         if item and len(item) >= 2:
             name, rating = item[:2]

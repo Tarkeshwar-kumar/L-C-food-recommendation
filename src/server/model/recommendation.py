@@ -3,6 +3,9 @@ from server.db.db import DatabaseConnection, DatabaseMethods
 
 class Recommendation:
     def __init__(self):
+        db = DatabaseMethods()
+        db.update_food_table()
+        
         self._positive_sentiment = 2
         self._negative_sentiment = -2
         self._neutral_sentiment = 0

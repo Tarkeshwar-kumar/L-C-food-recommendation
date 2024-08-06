@@ -7,6 +7,8 @@ from client.controller.chef import Chef
 from client.controller.admin import Admin
 from client.exception.exceptions import NotAuthoriseError
 import getpass
+# from client.controller.employee import Employee
+# from client.data import data
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
     client.connect(("localhost", 5000))
@@ -28,5 +30,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
             user = Admin()
 
         user.display_options(client)
+
+        # for data in data:
+        #     user.give_feedback_on_food(client, data)
     else:
         print("Authentication failed or unauthorized access")

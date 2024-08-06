@@ -330,8 +330,8 @@ class DatabaseMethods:
         query = "SELECT AVG(rating) FROM Feedback WHERE food_name = %s;"
         with DatabaseConnection() as connection:
             cursor = connection.cursor()
-            print("fn ", food_name[0])
-            cursor.execute(query, (food_name[0],))
+            print("fn ", food_name)
+            cursor.execute(query, (food_name,))
             result = cursor.fetchone()
             print("res; ", result)
             return result[0] if result else 0
@@ -496,3 +496,34 @@ class DatabaseMethods:
                 recommended_menu.append(food)
 
             return recommended_menu
+        
+    def update_food_table(self):
+        with DatabaseConnection() as connection:
+            cursor = connection.cursor()
+            update_rating_query = """
+            UPDATE Food
+            SET avg_rating = COALESCE((
+                SELECT AVG(rating)
+                FROM Feedback
+                WHERE Feedback.food_name = Food.food_name
+            ), 0); 
+            """
+            cursor.execute(update_rating_query)
+
+            update_sentiment_query = """
+            UPDATE Food
+            SET avg_sentiment = (
+                SELECT sentiment
+                FROM SentimentMapping
+                WHERE sentiment_value = (
+                    SELECT AVG(sentiment_value)
+                    FROM Feedback
+                    JOIN SentimentMapping ON Feedback.sentiment = SentimentMapping.sentiment
+                    WHERE Feedback.food_name = Food.food_name
+                )
+            );
+            """
+            cursor.execute(update_sentiment_query)
+            
+            # Commit the transaction
+            connection.commit()

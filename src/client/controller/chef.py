@@ -93,14 +93,11 @@ class Chef(User):
             self.roll_out_food_recommendation(client)
         elif action == "B":
             self.view_menu(client)
-        elif action == "C":
-            limit = int(input("Enter number of food in recommendation: "))
-            self.get_food_recommendation(client, limit)
-        elif action == 'D':
+        elif action == 'C':
             self.logout(client)
-        elif action == "E":
+        elif action == "D":
             self.audit_foods(client)
-        elif action == "F":
+        elif action == "E":
             self.view_audit_result(client)
         else:
             print("Invalid action")

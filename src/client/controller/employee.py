@@ -69,7 +69,7 @@ class Employee(User):
 
             client.sendall(bytes(request_data,encoding="utf-8"))
             received = client.recv(1024)
-            response = json.loads(received.decode().replace("'", '"'))
+            response = json.loads(received.decode())
         except Exception as e:
             print(e)
         else:
