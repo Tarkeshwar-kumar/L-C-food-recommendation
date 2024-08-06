@@ -527,3 +527,14 @@ class DatabaseMethods:
             
             # Commit the transaction
             connection.commit()
+
+    def calculate_avg_rating_audit(self, food_name):
+        print("calculating avg rating")
+        query = "SELECT AVG(rating) FROM Feedback WHERE food_name = %s;"
+        with DatabaseConnection() as connection:
+            cursor = connection.cursor()
+            print("fn ", food_name[0])
+            cursor.execute(query, (food_name[0],))
+            result = cursor.fetchone()
+            print("res; ", result)
+            return result[0] if result else 0

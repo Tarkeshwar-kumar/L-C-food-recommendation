@@ -147,7 +147,7 @@ class Chef(User, ChefService):
         food_list = db.get_food_list()
 
         for food in food_list:
-            avg_rating = db.calculate_avg_rating(food)
+            avg_rating = db.calculate_avg_rating_audit(food)
             if avg_rating == None:
                 avg_rating = 0
             print("rating" , avg_rating)
