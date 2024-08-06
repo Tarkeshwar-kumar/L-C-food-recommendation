@@ -60,7 +60,7 @@ class Employee(User):
 
     def get_food_recommendation(self, client):
         try:
-            limit = int(input("How many food items you want to see in recommendation"))
+            limit = int(input("How many food items you want to see in recommendation "))
             request= {
                 "request_type": "food_recommendation",
                 "limit": limit
@@ -69,6 +69,7 @@ class Employee(User):
 
             client.sendall(bytes(request_data,encoding="utf-8"))
             received = client.recv(1024)
+
             response = json.loads(received.decode())
         except Exception as e:
             print(e)
