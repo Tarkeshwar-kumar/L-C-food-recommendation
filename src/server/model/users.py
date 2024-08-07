@@ -105,6 +105,10 @@ class Employee(User, EmployeeService):
         db = DatabaseMethods()
         db.submit_food_audit_feedback(user_id, json_data)
 
+    def view_rolled_out_menu(self):
+        db = DatabaseMethods()
+        return db.view_rolled_out_menu()
+
 class ChefService(metaclass = ABCMeta):
     @abstractmethod
     def rollout_food_recommendation():
@@ -116,6 +120,11 @@ class ChefService(metaclass = ABCMeta):
 
 @dataclass
 class Chef(User, ChefService):
+
+    def audit_result(self):
+        db = DatabaseMethods()
+        return db.audit_result()
+
     
     def rollout_food_recommendation(self, food_list):
 
@@ -125,6 +134,7 @@ class Chef(User, ChefService):
         
         db = DatabaseMethods()
         db.delete_table()
+        print("Inserting into table")
         for food in food_list:
             db.insert_item_for_recommendation(food)
 
@@ -137,7 +147,7 @@ class Chef(User, ChefService):
         food_list = db.get_food_list()
 
         for food in food_list:
-            avg_rating = db.calculate_avg_rating(food)
+            avg_rating = db.calculate_avg_rating_audit(food)
             if avg_rating == None:
                 avg_rating = 0
             print("rating" , avg_rating)

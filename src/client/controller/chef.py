@@ -1,7 +1,7 @@
 from client.menu.menu import options
 from client.controller.controller import User
 import json
-from client.utils.utils import show_recommendatio_table
+from client.utils.utils import show_recommendatio_table, show_audit_result
 
 class Chef(User):
     
@@ -34,8 +34,9 @@ class Chef(User):
         finally:
             self.display_options(client)
 
-    def get_food_recommendation(self, client, limit):
+    def get_food_recommendation(self, client):
         try:
+            limit = int(input("How many food items you want to see in recommendation"))
             request= {
                 "request_type": "food_recommendation",
                 "limit": limit
@@ -68,6 +69,23 @@ class Chef(User):
             show_recommendatio_table(response['message'])
         finally:
             self.display_options(client)
+        
+    def view_audit_result(self, client):
+        try:
+            request= {
+                "request_type": "audit_result",
+            }
+            request_data = json.dumps(request)
+
+            client.sendall(bytes(request_data,encoding="utf-8"))
+            received = client.recv(1024)
+            response = json.loads(received.decode())
+        except Exception as e:
+            print(e)
+        else:
+            show_audit_result(response)
+        finally:
+            self.display_options(client)
 
     def choose_action(self, client):
         action = input("Choose action: ")
@@ -75,12 +93,11 @@ class Chef(User):
             self.roll_out_food_recommendation(client)
         elif action == "B":
             self.view_menu(client)
-        elif action == "C":
-            limit = int(input("Enter number of food in recommendation: "))
-            self.get_food_recommendation(client, limit)
-        elif action == 'D':
+        elif action == 'C':
             self.logout(client)
-        elif action == "E":
+        elif action == "D":
             self.audit_foods(client)
+        elif action == "E":
+            self.view_audit_result(client)
         else:
             print("Invalid action")
