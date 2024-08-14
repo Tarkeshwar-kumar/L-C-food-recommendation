@@ -78,8 +78,7 @@ class DatabaseMethods:
     def update_food_availability(self, food_name: str):
         with DatabaseConnection() as connection:
             cursor = connection.cursor()
-            
-            # Retrieve the current availability status
+
             cursor.execute(
                 """
                 SELECT availability_status
@@ -92,11 +91,9 @@ class DatabaseMethods:
             
             if result is not None:
                 current_status = result[0]
-                
-                # Toggle the status
+
                 new_availability = not current_status
-                
-                # Update the availability status
+
                 cursor.execute(
                     """
                     UPDATE Food
@@ -525,7 +522,6 @@ class DatabaseMethods:
             """
             cursor.execute(update_sentiment_query)
             
-            # Commit the transaction
             connection.commit()
 
     def calculate_avg_rating_audit(self, food_name):
