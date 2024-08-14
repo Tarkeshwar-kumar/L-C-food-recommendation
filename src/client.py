@@ -1,12 +1,9 @@
 import socket
 import json
-from client.menu.options import Auth
-from client.controller.controller import User
+from client.utils.auth import Auth
 from client.controller.employee import Employee
 from client.controller.chef import Chef
 from client.controller.admin import Admin
-from client.exception.exceptions import NotAuthoriseError
-import getpass
 # from client.controller.employee import Employee
 # from client.data import data
 
@@ -31,7 +28,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
 
         user.display_options(client)
 
-        # for data in data:
-        #     user.give_feedback_on_food(client, data)
     else:
         print("Authentication failed or unauthorized access")
