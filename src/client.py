@@ -2,9 +2,9 @@ import socket
 import json
 from client.utils.auth import Auth
 from client.controller.controller import User
-from client.controller.employee import Employee
-from client.controller.chef import Chef
-from client.controller.admin import Admin
+from client.controller.employee_controller import Employee
+from client.controller.chef_controller import Chef
+from client.controller.admin_controller import Admin
 from client.exception.exceptions import NotAuthoriseError
 import getpass
 # from client.controller.employee import Employee
