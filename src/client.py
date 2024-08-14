@@ -1,6 +1,6 @@
 import socket
 import json
-from client.menu.options import Auth
+from client.utils.auth import Auth
 from client.controller.controller import User
 from client.controller.employee import Employee
 from client.controller.chef import Chef
